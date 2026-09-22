@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "roles")
 class RoleEntity {
     @Id Short id;
-    @Column(nullable = false, length = 32) String name;
+    @Column(nullable = false, length = 30) String code;
+    @Column(nullable = false, length = 80) String name;
     protected RoleEntity() {}
 }

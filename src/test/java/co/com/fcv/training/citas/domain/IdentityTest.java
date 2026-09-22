@@ -2,7 +2,6 @@ package co.com.fcv.training.citas.domain;
 
 import org.junit.jupiter.api.Test;
 import java.time.Instant;
-import java.util.UUID;
 import static org.assertj.core.api.Assertions.*;
 
 class IdentityTest {
@@ -14,7 +13,7 @@ class IdentityTest {
 
     @Test void sessionExpiresAndRevokes() {
         Instant now = Instant.parse("2026-09-17T12:00:00Z");
-        UUID id = UUID.randomUUID();
+        Long id = 1L;
         assertThat(new RefreshSession(id, id, "hash", now.plusSeconds(1), null).activeAt(now)).isTrue();
         assertThat(new RefreshSession(id, id, "hash", now, null).activeAt(now)).isFalse();
         assertThat(new RefreshSession(id, id, "hash", now.plusSeconds(1), now).activeAt(now)).isFalse();

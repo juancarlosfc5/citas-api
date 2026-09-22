@@ -1,6 +1,6 @@
 # Índice de la LLM Wiki
 
-Última actualización: 2026-09-17. El corte backend de identidad (HU-005/006/007) tiene implementación y contrato REST inicial; las demás capacidades siguen sin contrato final.
+Última actualización: 2026-09-22. El corte backend de identidad (HU-005/006/007) tiene implementación y contrato REST inicial. El frontend React/Vite está importado y contiene trabajo local de integración auth pendiente de verificación. Las demás capacidades siguen sin contrato final.
 
 ## Lectura recomendada
 
@@ -13,6 +13,7 @@
 7. [Riesgos y preguntas](risks-open-questions.md)
 8. [Preferencias](preferences.md)
 9. [Trazabilidad](traceability.md)
+10. [Subagentes y delegación](subagents.md)
 
 ## Gobierno
 

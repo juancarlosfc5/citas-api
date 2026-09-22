@@ -63,7 +63,7 @@ public class JwtTokens implements Ports.Tokens {
     public JwtDecoder accessDecoder() { return accessDecoder; }
     public long accessSeconds() { return accessDuration.toSeconds(); }
 
-    public String access(UUID userId, Set<String> roles) {
+    public String access(Long userId, Set<String> roles) {
         Instant now = clock.instant();
         JwtClaimsSet claims = JwtClaimsSet.builder().issuer(issuer).subject(userId.toString())
                 .issuedAt(now).expiresAt(now.plus(accessDuration)).claim("token_use", "access")
@@ -71,7 +71,7 @@ public class JwtTokens implements Ports.Tokens {
         return accessEncoder.encode(JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims)).getTokenValue();
     }
 
-    public Ports.IssuedRefresh refresh(UUID userId) {
+    public Ports.IssuedRefresh refresh(Long userId) {
         Instant now = clock.instant();
         Instant expiry = now.plus(refreshDuration);
         String jti = UUID.randomUUID().toString();
@@ -85,7 +85,7 @@ public class JwtTokens implements Ports.Tokens {
         try {
             Jwt jwt = refreshDecoder.decode(token);
             if (!"refresh".equals(jwt.getClaimAsString("token_use")) || jwt.getId() == null) throw new AuthFailure();
-            return new Ports.RefreshIdentity(UUID.fromString(jwt.getSubject()), jwt.getId());
+            return new Ports.RefreshIdentity(Long.valueOf(jwt.getSubject()), jwt.getId());
         } catch (JwtException | IllegalArgumentException e) {
             throw new AuthFailure();
         }

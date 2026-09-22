@@ -9,6 +9,8 @@ spring:
     open-in-view: false
   flyway:
     enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
 server:
   error:
     include-message: never

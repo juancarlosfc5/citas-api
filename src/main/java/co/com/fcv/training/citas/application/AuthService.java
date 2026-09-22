@@ -9,7 +9,6 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Clock;
 import java.util.HexFormat;
 import java.util.Set;
-import java.util.UUID;
 
 public class AuthService {
     public record Registration(String firstName, String lastName, String documentType,
@@ -42,7 +41,7 @@ public class AuthService {
             String password = input.password();
             if (password == null || password.isBlank()) throw new IllegalArgumentException("Contraseña obligatoria");
             if (password.getBytes(StandardCharsets.UTF_8).length > 72) throw new IllegalArgumentException("Contraseña demasiado larga");
-            Account account = new Account(UUID.randomUUID(), Identity.required(input.firstName()),
+            Account account = new Account(null, Identity.required(input.firstName()),
                     Identity.required(input.lastName()), type, number, email,
                     Identity.required(input.phone()), passwords.hash(password), Set.of("USER"));
             return accounts.save(account);
@@ -86,7 +85,7 @@ public class AuthService {
 
     private Tokens issue(Account account) {
         Ports.IssuedRefresh refresh = tokens.refresh(account.id());
-        sessions.save(new RefreshSession(UUID.randomUUID(), account.id(), hash(refresh.jti()), refresh.expiresAt(), null));
+        sessions.save(new RefreshSession(null, account.id(), hash(refresh.jti()), refresh.expiresAt(), null));
         return new Tokens(tokens.access(account.id(), account.roles()), refresh.value(), tokens.accessSeconds());
     }
 

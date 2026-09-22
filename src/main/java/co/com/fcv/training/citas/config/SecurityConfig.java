@@ -31,7 +31,7 @@ class SecurityConfig {
     }
 
     @Bean SecurityFilterChain security(HttpSecurity http, JwtTokens tokens, AuthRequestGuard guard,
-                                       ProblemWriter problems) throws Exception {
+                                       ProblemWriter problems, CorsConfigurationSource corsConfigurationSource) throws Exception {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             List<String> roles = jwt.getClaimAsStringList("roles");
@@ -39,7 +39,7 @@ class SecurityConfig {
                     : roles.stream().map(r -> (GrantedAuthority) new SimpleGrantedAuthority("ROLE_" + r)).toList();
         });
         return http.csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
@@ -56,9 +56,9 @@ class SecurityConfig {
                 .build();
     }
 
-    @Bean CorsConfigurationSource cors(@Value("${app.cors.frontend-origin}") String origin) {
+    @Bean CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.frontend-origin}") String origin) {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(origin));
+        config.setAllowedOriginPatterns(List.of(origin));
         config.setAllowedMethods(List.of("POST", "GET", "OPTIONS"));
         config.setAllowedHeaders(List.of("Content-Type", "Authorization", "X-Requested-With"));
         config.setAllowCredentials(true);

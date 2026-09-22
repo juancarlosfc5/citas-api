@@ -13,7 +13,6 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -25,7 +24,7 @@ class AuthController {
                            @NotBlank @Size(max = 254) String email,
                            @NotBlank @Size(max = 40) String phone,
                            @NotBlank String password) {}
-    record RegisterResponse(UUID id, String firstName, String lastName, String documentType,
+    record RegisterResponse(Long id, String firstName, String lastName, String documentType,
                             String documentNumber, String email, String phone, String role) {}
     record LoginRequest(@NotBlank String email, @NotBlank String password) {}
     record AccessResponse(String accessToken, String tokenType, long expiresIn) {}

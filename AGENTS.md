@@ -2,9 +2,9 @@
 
 ## Estado comprobado del repositorio
 
-Al 2026-09-17 este repositorio no contiene aún `pom.xml`, Maven Wrapper, código fuente, pruebas ni `docs/wiki/scrum/`. No asumir nombres de paquetes, módulos, endpoints, DTOs, tablas o convenciones de prueba hasta que existan o estén aprobados.
+Al 2026-09-22 este repositorio contiene el incremento de identidad de HU-005/006/007 en `develop`, con Spring Boot, Flyway y pruebas. No asumir contratos adicionales, endpoints, DTOs, tablas o convenciones hasta que existan o estén aprobados.
 
-La fuente funcional es `../PRD.md`; las restricciones de arquitectura y plataforma están en `../RESTRICCIONES_TECNICAS.md`. Antes de una tarea, consultar el índice de la Wiki global en `docs/wiki/llm-wiki/wiki/index.md`, pero no crear ni mantener una Wiki local desde este agente.
+La fuente funcional es `../PRD.md`; las restricciones de arquitectura y plataforma están en `../RESTRICCIONES_TECNICAS.md`. Antes de una tarea, consultar el índice de la Wiki global en `docs/FCV Dev/llm-wiki/wiki/index.md`, pero no crear ni mantener una Wiki local desde este agente.
 
 ## Responsabilidad exclusiva
 
@@ -24,7 +24,7 @@ El diseño concreto de paquetes debe seguir esta separación una vez creado el p
 
 ## Flujo por historia de usuario
 
-1. Localizar la HU aprobada y su DoD en `docs/wiki/scrum/`. Si no existen, detener la implementación y solicitar o producir la especificación mediante el flujo autorizado.
+1. Localizar la HU aprobada y su DoD en `docs/FCV Dev/scrum/`. Si no existen, detener la implementación y solicitar o producir la especificación mediante el flujo autorizado.
 2. Identificar RF/RN del PRD, reglas de autorización/ownership, datos, puertos, adaptadores y contrato REST afectados.
 3. Antes de editar, presentar un plan con los archivos backend, migraciones, contrato y pruebas que cambiarán.
 4. Implementar el mínimo coherente y mantener las dependencias dirigidas hacia el dominio/aplicación.
@@ -43,7 +43,7 @@ El diseño concreto de paquetes debe seguir esta separación una vez creado el p
 
 ## Contratos y coordinación
 
-- El contrato REST aún no está aprobado; no inferir endpoints ni formatos desde pantallas.
+- El contrato REST de HU-005/006/007 está aprobado bajo `/api/v1/auth`; los demás contratos siguen pendientes y no se infieren desde pantallas.
 - Todo cambio contractual requiere coordinación con el orquestador y evidencia en backend y frontend antes de declararlo completado.
 - Registrar decisiones y contratos compartidos en la Wiki global mediante el orquestador, no desde este agente.
 

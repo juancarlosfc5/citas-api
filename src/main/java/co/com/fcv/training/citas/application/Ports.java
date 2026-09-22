@@ -5,7 +5,6 @@ import co.com.fcv.training.citas.domain.RefreshSession;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 public final class Ports {
@@ -15,14 +14,14 @@ public final class Ports {
         boolean existsEmail(String email);
         boolean existsDocument(String type, String number);
         Optional<Account> byEmail(String email);
-        Optional<Account> byId(UUID id);
+        Optional<Account> byId(Long id);
         Account save(Account account);
     }
 
     public interface Sessions {
         void save(RefreshSession session);
         Optional<RefreshSession> lockByJtiHash(String hash);
-        void revoke(UUID id, Instant when);
+        void revoke(Long id, Instant when);
     }
 
     public interface Passwords {
@@ -31,11 +30,11 @@ public final class Ports {
     }
 
     public record IssuedRefresh(String value, String jti, Instant expiresAt) {}
-    public record RefreshIdentity(UUID userId, String jti) {}
+    public record RefreshIdentity(Long userId, String jti) {}
 
     public interface Tokens {
-        String access(UUID userId, Set<String> roles);
-        IssuedRefresh refresh(UUID userId);
+        String access(Long userId, Set<String> roles);
+        IssuedRefresh refresh(Long userId);
         RefreshIdentity readRefresh(String token);
         long accessSeconds();
     }

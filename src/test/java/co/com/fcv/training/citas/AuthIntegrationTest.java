@@ -84,7 +84,7 @@ class AuthIntegrationTest {
         assertThat(mapper.readTree(body).get("email").asText()).isEqualTo(email);
         String hash = jdbc.queryForObject("select password_hash from users where email = ?", String.class, email);
         assertThat(hash).startsWith("$2").isNotEqualTo("SyntheticPass123!");
-        assertThat(jdbc.queryForObject("select count(*) from user_roles ur join roles r on ur.role_id=r.id where r.name='USER'", Integer.class)).isGreaterThan(0);
+        assertThat(jdbc.queryForObject("select count(*) from user_roles ur join roles r on ur.role_id=r.id where r.code='USER'", Integer.class)).isGreaterThan(0);
 
         mvc.perform(post("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON)
                 .content(registration(email, uniqueDoc()))).andExpect(status().isConflict());
@@ -155,6 +155,16 @@ class AuthIntegrationTest {
         mvc.perform(post("/api/v1/auth/login").header("X-Requested-With", "XMLHttpRequest")
                 .header("Origin", "https://attacker.example").contentType(MediaType.APPLICATION_JSON)
                 .content("{}")).andExpect(status().isForbidden());
+    }
+
+    @Test void browserPreflightAllowsConfiguredFrontendWithCredentials() throws Exception {
+        mvc.perform(options("/api/v1/auth/login")
+                        .header("Origin", "http://localhost:5173")
+                        .header("Access-Control-Request-Method", "POST")
+                        .header("Access-Control-Request-Headers", "content-type,x-requested-with"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Access-Control-Allow-Origin", "http://localhost:5173"))
+                .andExpect(header().string("Access-Control-Allow-Credentials", "true"));
     }
 
     @Test void simultaneousRefreshAllowsOnlyOneRotation() throws Exception {
