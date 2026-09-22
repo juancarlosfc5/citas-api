@@ -30,3 +30,9 @@ Para sitios distintos, la cookie es `HttpOnly; Secure; SameSite=None`, con `Path
 ## PREGUNTA ABIERTA
 
 Las rutas, filtros, paginación y formatos de fecha/hora de las demás HU siguen sin contrato aprobado.
+
+## DECISIÓN — 2026-09-22 · Corte web de autenticación
+
+`citas-web` consume las cuatro operaciones de autenticación directamente con `VITE_API_URL` (valor local: `http://localhost:8080`). Envía `credentials: include` y `X-Requested-With: XMLHttpRequest` en login, refresh y logout. El access JWT permanece solo en memoria; el refresh se mantiene en cookie `HttpOnly` y se rota al restaurar la sesión. La interfaz no registra ni muestra tokens o contraseñas.
+
+El CORS permite exclusivamente `FRONTEND_ORIGIN`, métodos `POST`, `GET`, `OPTIONS`, encabezados `Content-Type`, `Authorization`, `X-Requested-With` y credenciales. La base de referencia ya existente utiliza `BIGINT` para usuarios, `roles.code` y `refresh_tokens`; Flyway hace baseline en versión 0 y `V1` es compatible con ese esquema 3FN.
