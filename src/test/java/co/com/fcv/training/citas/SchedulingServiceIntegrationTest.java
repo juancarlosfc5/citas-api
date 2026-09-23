@@ -12,6 +12,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.*;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.*;
 
@@ -39,6 +40,23 @@ class SchedulingServiceIntegrationTest {
         assertThatThrownBy(() -> scheduling.reserve(patient,professional,location,specialty,LocalDateTime.of(date,LocalTime.of(8,0)),"Duplicada")).hasMessageContaining("Franja");
         assertThat(scheduling.decide(admin,appointment.id(),"REJECT","Sin disponibilidad clínica").status()).isEqualTo("REJECTED");
         assertThat(scheduling.availability(location,specialty,professional,date)).anyMatch(a -> a.startAt().equals(LocalDateTime.of(date,LocalTime.of(8,0))));
+    }
+    @Test void retainsRescheduledSlotThenRejectsOrApprovesItAtomically() {
+        String suffix=UUID.randomUUID().toString(); Long location=jdbc.queryForObject("select id from locations where active=true limit 1",Long.class);
+        Long general=jdbc.queryForObject("select id from specialties where code='MEDICINA_GENERAL'",Long.class);
+        Long professional=scheduling.createProfessional("Agenda","Pro","CC","RP"+suffix,"rp-"+suffix+"@example.test","300","hash","RP"+suffix,"LIC"+suffix);
+        Long owner=jdbc.queryForObject("select user_id from professionals where id=?",Long.class,professional);
+        scheduling.setProfessionalSpecialties(professional,List.of(general),general); scheduling.setProfessionalLocations(professional,List.of(location));
+        LocalDate date=LocalDate.now().plusDays(3); scheduling.createBlock(owner,location,date,LocalTime.of(8,0),LocalTime.of(10,0));
+        Long patient=user("rp-patient-"+suffix+"@example.test","RPU"+suffix); Long admin=user("rp-admin-"+suffix+"@example.test","RPA"+suffix);
+        Long appointment=scheduling.reserve(patient,professional,location,general,LocalDateTime.of(date,LocalTime.of(8,0)),"General").id();
+        Map<String,Object> request=scheduling.requestReschedule(patient,appointment,location,LocalDateTime.of(date,LocalTime.of(9,0)));
+        assertThat(scheduling.availability(location,general,professional,date)).noneMatch(a->a.startAt().equals(LocalDateTime.of(date,LocalTime.of(9,0))));
+        assertThat(scheduling.decideReschedule(admin,((Number)request.get("id")).longValue(),"REJECT","No disponible").get("status")).isEqualTo("REJECTED");
+        assertThat(scheduling.availability(location,general,professional,date)).anyMatch(a->a.startAt().equals(LocalDateTime.of(date,LocalTime.of(9,0))));
+        Map<String,Object> approved=scheduling.requestReschedule(patient,appointment,location,LocalDateTime.of(date,LocalTime.of(9,0)));
+        scheduling.decideReschedule(admin,((Number)approved.get("id")).longValue(),"APPROVE",null);
+        assertThat(scheduling.appointment(patient,appointment,false).get("startAt")).isEqualTo(LocalDateTime.of(date,LocalTime.of(9,0)));
     }
     private Long user(String email,String document) { jdbc.update("insert into users(first_name,last_name,document_type,document_number,email,phone,password_hash,active,email_verified) values ('Test','User','CC',?,?,?,'hash',true,false)",document,email,"300"); return jdbc.queryForObject("select id from users where email=?",Long.class,email); }
 }

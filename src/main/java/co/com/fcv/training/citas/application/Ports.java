@@ -44,4 +44,8 @@ public final class Ports {
     public interface Transactions {
         <T> T run(Supplier<T> work);
     }
+
+    public record AppointmentStatusChanged(Long appointmentId, String previousStatus, String status,
+                                           String source, Long actorId, Instant occurredAt) {}
+    public interface AppointmentEvents { void publish(AppointmentStatusChanged event); }
 }

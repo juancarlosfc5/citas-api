@@ -55,3 +55,21 @@ Errores de validación usan `400`; recursos o relaciones inexistentes usan `404`
 `citas-web` consume las cuatro operaciones de autenticación directamente con `VITE_API_URL` (valor local: `http://localhost:8080`). Envía `credentials: include` y `X-Requested-With: XMLHttpRequest` en login, refresh y logout. El access JWT permanece solo en memoria; el refresh se mantiene en cookie `HttpOnly` y se rota al restaurar la sesión. La interfaz no registra ni muestra tokens o contraseñas.
 
 El CORS permite exclusivamente `FRONTEND_ORIGIN`, métodos `POST`, `GET`, `OPTIONS`, encabezados `Content-Type`, `Authorization`, `X-Requested-With` y credenciales. La base de referencia ya existente utiliza `BIGINT` para usuarios, `roles.code` y `refresh_tokens`; Flyway hace baseline en versión 0 y `V1` es compatible con ese esquema 3FN.
+
+## DECISIÓN — 2026-09-23 · Contrato S4 de ciclo de vida
+
+Todas las rutas usan `/api/v1`, JSON, JWT access y fecha/hora local de `America/Bogota`.
+
+| Recurso | Operación | Rol |
+|---|---|---|
+| Recuperación | `POST /auth/password-recovery`, `POST /auth/password-reset` | pública |
+| Perfil | `GET|PATCH /users/me` | autenticado |
+| EPS y planes | `GET|POST|PATCH /admin/eps`, `GET|POST|PATCH /admin/eps-plans` | ADMIN |
+| Citas propias | `GET /appointments`, `GET /appointments/{id}`, `POST /appointments/{id}/cancel`, `POST /appointments/{id}/reschedule-requests`, `GET /appointments/{id}/history` | USER |
+| Agenda y cierre | `GET /professional/appointments`, `POST /professional/appointments/{id}/closure` | PROFESSIONAL |
+| Bandeja y decisiones | `GET /admin/inbox`, `POST /admin/reschedule-requests/{id}/decision` | ADMIN |
+| Próximas citas | `GET /admin/appointments/upcoming` | ADMIN |
+
+La recuperación responde `202` sin revelar la existencia de la cuenta. En perfil `local`, un ADMIN puede consumir una sola vez el token de prueba con `GET /auth/local/password-reset-mailbox?email=`; ese token vive solo en memoria y nunca se registra. `PATCH /users/me` permite únicamente `phone`.
+
+Las reprogramaciones retienen slots mediante `professional_slots.reschedule_request_id`. Una aprobación libera los slots originales y asigna los retenidos; un rechazo libera solo la retención. La bandeja admite filtros opcionales `locationId`, `professionalId`, `specialtyId` y `date`. La consulta de próximas citas usa `from`, `to` y `locationId` opcional; es la fuente de lectura para n8n y no cambia el núcleo.

@@ -6,12 +6,14 @@ import co.com.fcv.training.citas.domain.Account;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.time.Duration;
 
 @RestController
@@ -28,19 +30,25 @@ class AuthController {
                             String documentNumber, String email, String phone, String role) {}
     record LoginRequest(@NotBlank String email, @NotBlank String password) {}
     record AccessResponse(String accessToken, String tokenType, long expiresIn) {}
+    record RecoveryRequest(@NotBlank @Email String email) {}
+    record ResetRequest(@NotBlank String token, @NotBlank String password) {}
 
     private final AuthService auth;
     private final boolean secureCookie;
     private final String sameSite;
     private final long refreshDays;
+    private final co.com.fcv.training.citas.application.PasswordRecoveryService recovery;
+    private final org.springframework.beans.factory.ObjectProvider<co.com.fcv.training.citas.application.LocalPasswordResetMailbox> mailbox;
 
     AuthController(AuthService auth, @Value("${app.cookie.secure}") boolean secureCookie,
                    @Value("${app.cookie.same-site}") String sameSite,
-                   @Value("${app.jwt.refresh-days}") long refreshDays) {
+                   @Value("${app.jwt.refresh-days}") long refreshDays, co.com.fcv.training.citas.application.PasswordRecoveryService recovery, org.springframework.beans.factory.ObjectProvider<co.com.fcv.training.citas.application.LocalPasswordResetMailbox> mailbox) {
         this.auth = auth;
         this.secureCookie = secureCookie;
         this.sameSite = sameSite;
         this.refreshDays = refreshDays;
+        this.recovery = recovery;
+        this.mailbox = mailbox;
     }
 
     @PostMapping("/register")
@@ -66,6 +74,12 @@ class AuthController {
     ResponseEntity<Void> logout(@CookieValue(name = "refresh_token", required = false) String token) {
         auth.logout(token);
         return ResponseEntity.noContent().header(HttpHeaders.SET_COOKIE, cookie("", Duration.ZERO)).build();
+    }
+
+    @PostMapping("/password-recovery") ResponseEntity<Void> recovery(@Valid @RequestBody RecoveryRequest request) { recovery.request(request.email()); return ResponseEntity.accepted().build(); }
+    @PostMapping("/password-reset") ResponseEntity<Void> reset(@Valid @RequestBody ResetRequest request) { recovery.reset(request.token(),request.password()); return ResponseEntity.noContent().build(); }
+    @GetMapping("/local/password-reset-mailbox") @PreAuthorize("hasRole('ADMIN')") ResponseEntity<java.util.Map<String,String>> mailbox(@RequestParam @Email String email) {
+        var local=mailbox.getIfAvailable(); if(local==null)return ResponseEntity.notFound().build(); return local.take(email).map(token -> ResponseEntity.ok(java.util.Map.of("token",token))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     private ResponseEntity<AccessResponse> tokenResponse(AuthService.Tokens tokens) {

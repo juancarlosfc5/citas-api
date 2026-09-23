@@ -1,6 +1,6 @@
 # Índice de la LLM Wiki
 
-Última actualización: 2026-09-22. El corte backend de identidad (HU-005/006/007) tiene implementación y contrato REST inicial. El frontend React/Vite está importado y contiene trabajo local de integración auth pendiente de verificación. Las demás capacidades siguen sin contrato final.
+Última actualización: 2026-09-23. El MVP S2-S4 incorpora identidad, oferta, disponibilidad, reserva, ciclo de vida de citas y vistas web por rol. El contrato REST de S3 y S4 está consolidado en `contracts.md`; S5/S6 añadirán los workflows n8n sobre la consulta y eventos preparados en S4.
 
 ## Lectura recomendada
 

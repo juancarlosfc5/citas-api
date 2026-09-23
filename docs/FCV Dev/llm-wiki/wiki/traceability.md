@@ -15,3 +15,7 @@ El catálogo de ocho subagentes fue versionado en `docs/FCV Dev/subagents/` y en
 ## HECHO — 2026-09-22 · Integración de autenticación
 
 El prototipo `citas-web/portal-de-citas.zip` se importó como React/Vite y se integró con HU-005/006/007. La comprobación usa MySQL persistente, CORS explícito, registro/login/refresh/logout reales y pruebas de frontend. HU-033 permanece en progreso porque las pantallas de perfil, agenda y roles posteriores siguen fuera del corte de autenticación.
+
+## HECHO — 2026-09-23 · Corte S4
+
+El backend implementa recuperación local controlada, perfil, EPS/planes, cancelación, reprogramación retenida, agenda/cierre profesional, bandeja administrativa, auditoría y consulta de citas próximas. El frontend React integra los flujos USER, PROFESSIONAL y ADMIN sin fuentes simuladas de citas. Las pruebas Maven con Testcontainers, Vitest, lint y build se ejecutaron contra las migraciones V1-V3. La evidencia operativa está en `docs/FCV Dev/evidence/S4.md`.
