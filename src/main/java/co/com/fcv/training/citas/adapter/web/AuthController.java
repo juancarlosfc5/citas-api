@@ -14,10 +14,12 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.Duration;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Tag(name = "Autenticación")
 class AuthController {
     record RegisterRequest(@NotBlank @Size(max = 120) String firstName,
                            @NotBlank @Size(max = 120) String lastName,

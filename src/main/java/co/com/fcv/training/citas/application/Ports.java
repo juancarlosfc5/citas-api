@@ -5,6 +5,7 @@ import co.com.fcv.training.citas.domain.RefreshSession;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public final class Ports {
@@ -45,7 +46,7 @@ public final class Ports {
         <T> T run(Supplier<T> work);
     }
 
-    public record AppointmentStatusChanged(Long appointmentId, String previousStatus, String status,
+    public record AppointmentStatusChanged(UUID eventId, Long appointmentId, String previousStatus, String status,
                                            String source, Long actorId, Instant occurredAt) {}
     public interface AppointmentEvents { void publish(AppointmentStatusChanged event); }
 }

@@ -176,6 +176,13 @@ class AuthIntegrationTest {
                 .andExpect(header().string("Access-Control-Allow-Credentials", "true"));
     }
 
+    @Test void publishesOpenApiDocumentationWithoutAuthentication() throws Exception {
+        mvc.perform(get("/v3/api-docs"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.info.title").value("FCV Training Citas API"))
+                .andExpect(jsonPath("$.components.securitySchemes.bearerAuth.scheme").value("bearer"));
+    }
+
     @Test void simultaneousRefreshAllowsOnlyOneRotation() throws Exception {
         String email = uniqueEmail(); register(email, uniqueDoc());
         String token = login(email, "SyntheticPass123!").andExpect(status().isOk())

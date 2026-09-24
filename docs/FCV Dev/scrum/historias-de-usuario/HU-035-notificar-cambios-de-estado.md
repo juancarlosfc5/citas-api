@@ -2,7 +2,7 @@
 id: HU-035
 tipo: historia-de-usuario
 titulo: "Notificar cambios de estado"
-estado: Pendiente de aprobación
+estado: En curso
 epica: "[[EP-008-cliente-web-y-automatizaciones-posteriores]]"
 esfuerzo: Alto
 sprint_sugerido: "Incremento 7"

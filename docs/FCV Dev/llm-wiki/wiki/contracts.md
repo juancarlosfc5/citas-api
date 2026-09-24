@@ -73,3 +73,11 @@ Todas las rutas usan `/api/v1`, JSON, JWT access y fecha/hora local de `America/
 La recuperación responde `202` sin revelar la existencia de la cuenta. En perfil `local`, un ADMIN puede consumir una sola vez el token de prueba con `GET /auth/local/password-reset-mailbox?email=`; ese token vive solo en memoria y nunca se registra. `PATCH /users/me` permite únicamente `phone`.
 
 Las reprogramaciones retienen slots mediante `professional_slots.reschedule_request_id`. Una aprobación libera los slots originales y asigna los retenidos; un rechazo libera solo la retención. La bandeja admite filtros opcionales `locationId`, `professionalId`, `specialtyId` y `date`. La consulta de próximas citas usa `from`, `to` y `locationId` opcional; es la fuente de lectura para n8n y no cambia el núcleo.
+
+## S5 — Documentación OpenAPI y webhook n8n
+
+- Swagger UI: `/swagger-ui/index.html`; OpenAPI JSON: `/v3/api-docs`. Solo estas rutas son públicas; las operaciones exigen Bearer JWT (`bearerAuth`).
+- Webhook saliente opcional, desactivado por defecto: `N8N_WEBHOOK_ENABLED`, `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_BEARER_TOKEN`. Con `enabled=true` sin URL o token la API falla al iniciar.
+- Solicitud `POST` con `Authorization: Bearer <token>` y payload mínimo sin PII: `schemaVersion`, `eventId`, `eventType`, `appointmentId`, `status`, `source`, `occurredAt`.
+- Eventos emitidos: `APPROVED`/`REJECTED` decididos por ADMIN y `CANCELLED` por USER. No se emiten la aprobación automática de medicina general (`SYSTEM`) ni los cierres clínicos.
+- Se envía después del commit; un fallo de red o un no-2xx solo genera un log técnico y no revierte la cita. Sin reintentos persistentes.

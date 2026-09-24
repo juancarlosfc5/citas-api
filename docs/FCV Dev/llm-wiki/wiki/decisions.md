@@ -19,3 +19,7 @@ Los ocho subagentes especializados se mantienen como archivos Markdown versionad
 ## HECHO — 2026-09-22 · Frontend
 
 React es el framework detectado en `citas-web`; deja de ser una pregunta abierta. La aprobación visual y la verificación del incremento auth continúan pendientes de evidencia.
+
+## DECISIÓN — 2026-09-24 · Webhook n8n Cloud sin reintentos
+
+La primera integración con n8n es un webhook HTTP saliente posterior al commit, con Bearer compartido y entrega best-effort. El núcleo conserva la autoridad sobre agenda, slots y auditoría; MCP y reintentos persistentes quedan para sesiones posteriores.

@@ -9,11 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.*;
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1")
+@Tag(name = "Agenda")
+@SecurityRequirement(name = "bearerAuth")
 class SchedulingController {
     record SpecialtyRequest(@NotBlank @Size(max=50) String code,@NotBlank @Size(max=150) String name,@Min(30) @Max(60) int durationMinutes,boolean general) {}
     record SpecialtyPatch(@Size(max=150) String name,Integer durationMinutes,Boolean active) {}

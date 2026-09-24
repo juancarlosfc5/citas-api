@@ -7,9 +7,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.*;
 
 @RestController @RequestMapping("/api/v1/users")
+@Tag(name = "Perfil")
+@SecurityRequirement(name = "bearerAuth")
 class ProfileController {
     record PhoneRequest(@NotBlank @Size(max=40) String phone) {}
     private final JdbcTemplate jdbc;
