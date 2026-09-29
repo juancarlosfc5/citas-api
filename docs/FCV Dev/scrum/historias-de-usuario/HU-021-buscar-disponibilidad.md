@@ -53,6 +53,7 @@ Solo se muestran horarios que permiten todos los slots necesarios; tipo general/
 - 2026-09-17 — HU creada en estado `Pendiente de aprobación`.
 - 2026-09-25 — Cierre S3 del núcleo de agendamiento: evidencia en [[S3-cierre-agendamiento]]. Estado sin cambiar hasta recorrido web visual.
 - 2026-09-29 — Recorrido web con los tres roles y verificación final: [[S3-cierre-agendamiento]]. Estado `Completada`.
+- 2026-09-29 — Mejora UX: calendario de días disponibles y filtro por especialidad (`GET /availability/days`); evidencia [[UX-calendario-user]].
 ## Notas y decisiones
 - El tratamiento de concurrencia se prueba definitivamente en las HU de reserva.
 - La afiliación es un dato administrativo opcional y no condiciona búsqueda ni reserva.

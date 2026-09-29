@@ -43,6 +43,7 @@ Todos los recursos S3 usan `/api/v1`, JWT access en `Authorization: Bearer` y JS
 | Profesionales | `POST /admin/professionals`; `PUT /admin/professionals/{id}/specialties|locations`; `PATCH /admin/professionals/{id}/active` | ADMIN |
 | Bloques propios | `GET|POST /professional/availability-blocks`; `PATCH|DELETE /professional/availability-blocks/{id}` | PROFESSIONAL |
 | Disponibilidad | `GET /availability?locationId=&specialtyId=&date=&professionalId?` | USER |
+| Días disponibles (calendario) | `GET /availability/days?locationId=&specialtyId=&from=&to=` → `[{date, slots}]`; `from` ≥ hoy, `from` ≤ `to`, rango < 62 días (si no, 400). Aditivo 2026-09-29. | USER |
 | Reserva | `POST /appointments` | USER |
 | Solicitudes especializadas | `GET /admin/appointments/pending-specialized`; `POST /admin/appointments/{id}/decision` | ADMIN |
 

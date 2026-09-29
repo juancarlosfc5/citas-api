@@ -130,4 +130,18 @@ class SchedulingClosureIntegrationTest {
         } finally { pool.shutdownNow(); }
         assertThat(jdbc.queryForObject("select count(*) from appointments where professional_id=? and scheduled_start_at=?", Integer.class, f.professional(), at(f, 8, 0))).isEqualTo(1);
     }
+
+    @Test void availableDaysListsOnlyDatesWithReservableSlotsAndValidatesRange() {
+        Fixture f = fixture(10);
+        LocalDate from = f.date().minusDays(1), to = f.date().plusDays(1);
+        assertThat(scheduling.availableDays(f.location(), f.general(), from, to)).containsExactly(new SchedulingService.DayAvailability(f.date(), 6));
+        assertThat(scheduling.availableDays(f.location(), f.specialty(), from, to)).containsExactly(new SchedulingService.DayAvailability(f.date(), 4));
+        scheduling.reserve(f.patient(), f.professional(), f.location(), f.specialty(), at(f, 8, 0), "A");
+        scheduling.reserve(f.patient(), f.professional(), f.location(), f.specialty(), at(f, 9, 0), "B");
+        scheduling.reserve(f.patient(), f.professional(), f.location(), f.specialty(), at(f, 14, 0), "C");
+        assertThat(scheduling.availableDays(f.location(), f.specialty(), from, to)).isEmpty();
+        assertThatThrownBy(() -> scheduling.availableDays(f.location(), f.general(), to, from)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> scheduling.availableDays(f.location(), f.general(), LocalDate.now().minusDays(1), to)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> scheduling.availableDays(f.location(), f.general(), LocalDate.now(), LocalDate.now().plusDays(62))).isInstanceOf(IllegalArgumentException.class);
+    }
 }

@@ -56,6 +56,7 @@ La estética se deriva del prototipo React/Vite importado desde AI Studio. Esta 
 - 2026-09-17 — HU creada en estado `Pendiente de aprobación`.
 - 2026-09-22 — Corte React de autenticación implementado y verificado cross-repo; la HU queda en progreso hasta cubrir las pantallas de sus dependencias posteriores.
 - 2026-09-29 — Corte de agendamiento integrado y recorrido web verificado; HU sigue `En progreso` por pantallas de HU posteriores fuera de este corte.
+- 2026-09-29 — Mejora UX: calendario de días disponibles y filtro por especialidad (`GET /availability/days`); evidencia [[UX-calendario-user]].
 ## Notas y decisiones
 - React + TypeScript + Vite se adopta para este corte a partir del prototipo entregado `portal-de-citas.zip`.
 - 2026-09-17: aquí quedan las tareas visuales diferidas de HU-005/006/007: formulario de registro, feedback de login, renovación desde navegador y limpieza de estado autenticado al salir. Integrar `credentials`, `X-Requested-With` y el contrato de cookie cuando se aborde la UI.
