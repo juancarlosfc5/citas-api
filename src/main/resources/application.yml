@@ -27,9 +27,9 @@ app:
     secure: ${REFRESH_COOKIE_SECURE:true}
     same-site: ${REFRESH_COOKIE_SAME_SITE:None}
   n8n:
-    webhook:
-      enabled: ${N8N_WEBHOOK_ENABLED:false}
-      url: ${N8N_WEBHOOK_URL:}
-      bearer-token: ${N8N_WEBHOOK_BEARER_TOKEN:}
-      connect-timeout-ms: ${N8N_WEBHOOK_CONNECT_TIMEOUT_MS:3000}
-      read-timeout-ms: ${N8N_WEBHOOK_READ_TIMEOUT_MS:5000}
+    status-webhook:
+      enabled: ${N8N_STATUS_WEBHOOK_ENABLED:false}
+      url: ${N8N_STATUS_WEBHOOK_URL:}
+      bearer-token: ${N8N_STATUS_WEBHOOK_BEARER_TOKEN:}
+      connect-timeout-ms: ${N8N_STATUS_WEBHOOK_CONNECT_TIMEOUT_MS:3000}
+      read-timeout-ms: ${N8N_STATUS_WEBHOOK_READ_TIMEOUT_MS:5000}

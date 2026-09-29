@@ -59,7 +59,7 @@ class N8nWebhookAppointmentEventsTest {
     @Test void requiresUrlAndTokenWhenEnabled() {
         assertThatThrownBy(() -> new N8nWebhookAppointmentEvents("", "", 100, 100))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("N8N_WEBHOOK_URL");
+                .hasMessageContaining("N8N_STATUS_WEBHOOK_URL");
     }
 
     private void startServer(com.sun.net.httpserver.HttpHandler handler) throws Exception {

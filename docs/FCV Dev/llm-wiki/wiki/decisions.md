@@ -23,3 +23,7 @@ React es el framework detectado en `citas-web`; deja de ser una pregunta abierta
 ## DECISIÓN — 2026-09-24 · Webhook n8n Cloud sin reintentos
 
 La primera integración con n8n es un webhook HTTP saliente posterior al commit, con Bearer compartido y entrega best-effort. El núcleo conserva la autoridad sobre agenda, slots y auditoría; MCP y reintentos persistentes quedan para sesiones posteriores.
+
+## DECISIÓN — 2026-09-25 · Configuración n8n aislada del orquestador Docker
+
+Las URL y Bearer de n8n no pertenecen a `docker-compose.yml` ni al `.env` de la raíz. Cada workflow mantiene sus variables en `citas-api/.env`, archivo ignorado por Git. El flujo activo WF-002 usa `N8N_STATUS_WEBHOOK_*`; WF-001 y WF-003 reservan prefijos independientes. Así, cambiar una URL generada por n8n no exige editar Docker ni afecta otros flujos.

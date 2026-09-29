@@ -77,7 +77,7 @@ Las reprogramaciones retienen slots mediante `professional_slots.reschedule_requ
 ## S5 — Documentación OpenAPI y webhook n8n
 
 - Swagger UI: `/swagger-ui/index.html`; OpenAPI JSON: `/v3/api-docs`. Solo estas rutas son públicas; las operaciones exigen Bearer JWT (`bearerAuth`).
-- Webhook saliente opcional, desactivado por defecto: `N8N_WEBHOOK_ENABLED`, `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_BEARER_TOKEN`. Con `enabled=true` sin URL o token la API falla al iniciar.
+- Cada workflow n8n usa URL y Bearer propios. El adaptador implementado para cambios de estado usa `N8N_STATUS_WEBHOOK_ENABLED`, `N8N_STATUS_WEBHOOK_URL` y `N8N_STATUS_WEBHOOK_BEARER_TOKEN`; con `enabled=true` sin URL o token la API falla al iniciar. Los nombres `N8N_REMINDERS_*` y `N8N_DAILY_SUMMARY_*` quedan reservados para flujos futuros y no son consumidos todavía por la API.
 - Solicitud `POST` con `Authorization: Bearer <token>` y payload mínimo sin PII: `schemaVersion`, `eventId`, `eventType`, `appointmentId`, `status`, `source`, `occurredAt`.
 - Eventos emitidos: `APPROVED`/`REJECTED` decididos por ADMIN y `CANCELLED` por USER. No se emiten la aprobación automática de medicina general (`SYSTEM`) ni los cierres clínicos.
 - Se envía después del commit; un fallo de red o un no-2xx solo genera un log técnico y no revierte la cita. Sin reintentos persistentes.

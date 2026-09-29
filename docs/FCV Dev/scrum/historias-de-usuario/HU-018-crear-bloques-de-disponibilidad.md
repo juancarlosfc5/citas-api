@@ -2,7 +2,7 @@
 id: HU-018
 tipo: historia-de-usuario
 titulo: "Crear bloques de disponibilidad"
-estado: Aprobada
+estado: Completada
 epica: "[[EP-004-disponibilidad-del-profesional]]"
 esfuerzo: Alto
 sprint_sugerido: "Incremento 4"
@@ -29,9 +29,9 @@ Puede crear múltiples bloques (por ejemplo mañana/tarde); cada uno se discreti
 ## Esfuerzo
 **Nivel:** Alto. **Justificación de dificultad:** exige validación temporal, autorización, sede y base para concurrencia de reservas.
 ## Tareas de desarrollo
-- [ ] **T-01 — Modelar bloque y slots.** Dificultad: Alto. Preservar 3FN e índices de agenda.
-- [ ] **T-02 — Validar publicación.** Dificultad: Alto. Aplicar future-only, no solapamiento y sede/estado.
-- [ ] **T-03 — Entregar calendario/formulario y pruebas.** Dificultad: Alto. Cubrir casos válidos e inválidos.
+- [x] **T-01 — Modelar bloque y slots.** Dificultad: Alto. Preservar 3FN e índices de agenda.
+- [x] **T-02 — Validar publicación.** Dificultad: Alto. Aplicar future-only, no solapamiento y sede/estado.
+- [x] **T-03 — Entregar calendario/formulario y pruebas.** Dificultad: Alto. Cubrir casos válidos e inválidos.
 ## Criterios de aceptación
 ### CA-01 — Bloque futuro válido
 **Dado** PROFESSIONAL activo asignado a una sede, **cuando** crea un bloque futuro válido, **entonces** queda disponible en slots de 30 minutos.
@@ -40,16 +40,18 @@ Puede crear múltiples bloques (por ejemplo mañana/tarde); cada uno se discreti
 ### CA-03 — Múltiples franjas
 **Dado** un día sin conflicto, **cuando** crea dos franjas separadas, **entonces** ambas quedan disponibles sin incluir el intervalo intermedio.
 ## Definition of Done
-- [ ] CA-01 a CA-03 tienen pruebas de dominio/aplicación/REST y cliente aplicable.
-- [ ] Migración/índices de agenda aplicables y ownership de PROFESSIONAL verificados.
-- [ ] Trazabilidad Scrum actualizada.
+- [x] CA-01 a CA-03 tienen pruebas de dominio/aplicación/REST y cliente aplicable.
+- [x] Migración/índices de agenda aplicables y ownership de PROFESSIONAL verificados.
+- [x] Trazabilidad Scrum actualizada.
 ## Evidencia de validación
 | Elemento | Resultado | Evidencia | Observación |
 |---|---|---|---|
-| CA-01 | Pendiente | — | — |
-| CA-02 | Pendiente | — | — |
-| CA-03 / DoD | Pendiente | — | — |
+| CA-01 | Cumple | [[S3-cierre-agendamiento]] REST: bloques 33/34 | Bloque futuro en sede asignada. |
+| CA-02 | Cumple | [[S3-cierre-agendamiento]] REST 2026-09-29 | Pasado 400, solape 409, no múltiplo 30 400, fin≤inicio 400, sede no asignada 409. |
+| CA-03 / DoD | Cumple | [[S3-cierre-agendamiento]]; `SchedulingClosureIntegrationTest`; recorrido web | Bloque 08–10 genera 4 franjas; DoD cumplido. |
 ## Historial de validación
 - 2026-09-17 — HU creada en estado `Pendiente de aprobación`.
+- 2026-09-25 — Cierre S3 del núcleo de agendamiento: evidencia en [[S3-cierre-agendamiento]]. Estado sin cambiar hasta recorrido web visual.
+- 2026-09-29 — Recorrido web con los tres roles y verificación final: [[S3-cierre-agendamiento]]. Estado `Completada`.
 ## Notas y decisiones
 - La representación interna de slots se decide en [[HU-002-modelar-persistencia-3fn]].

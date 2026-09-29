@@ -2,7 +2,7 @@
 id: HU-020
 tipo: historia-de-usuario
 titulo: "Consultar calendario de disponibilidad"
-estado: Aprobada
+estado: Completada
 epica: "[[EP-004-disponibilidad-del-profesional]]"
 esfuerzo: Medio
 sprint_sugerido: "Incremento 4"
@@ -29,9 +29,9 @@ La agenda de disponibilidad no sustituye la agenda visible de citas aprobadas.
 ## Esfuerzo
 **Nivel:** Medio. **Justificación de dificultad:** requiere filtros y aislamiento de datos en una vista de calendario.
 ## Tareas de desarrollo
-- [ ] **T-01 — Definir consulta/filtros.** Dificultad: Medio. Acordar fecha/sede y representación sin imponer UI.
-- [ ] **T-02 — Aplicar ownership.** Dificultad: Medio. Restringir al calendario del autenticado.
-- [ ] **T-03 — Entregar calendario y pruebas.** Dificultad: Medio. Probar filtro y ausencia de agenda ajena.
+- [x] **T-01 — Definir consulta/filtros.** Dificultad: Medio. Acordar fecha/sede y representación sin imponer UI.
+- [x] **T-02 — Aplicar ownership.** Dificultad: Medio. Restringir al calendario del autenticado.
+- [x] **T-03 — Entregar calendario y pruebas.** Dificultad: Medio. Probar filtro y ausencia de agenda ajena.
 ## Criterios de aceptación
 ### CA-01 — Visualización propia
 **Dado** bloques propios publicados, **cuando** PROFESSIONAL consulta su calendario, **entonces** ve fecha, franja y sede de sus bloques.
@@ -40,15 +40,17 @@ La agenda de disponibilidad no sustituye la agenda visible de citas aprobadas.
 ### CA-03 — Aislamiento
 **Dado** otro profesional, **cuando** intenta consultar calendario ajeno, **entonces** no obtiene esos bloques.
 ## Definition of Done
-- [ ] CA-01 a CA-03 probados en autorización/REST y cliente aplicable.
-- [ ] No se exponen datos de USER ni información ajena; trazabilidad actualizada.
+- [x] CA-01 a CA-03 probados en autorización/REST y cliente aplicable.
+- [x] No se exponen datos de USER ni información ajena; trazabilidad actualizada.
 ## Evidencia de validación
 | Elemento | Resultado | Evidencia | Observación |
 |---|---|---|---|
-| CA-01 | Pendiente | — | — |
-| CA-02 | Pendiente | — | — |
-| CA-03 / DoD | Pendiente | — | — |
+| CA-01 | Cumple | [[S3-cierre-agendamiento]] REST listado | Fecha/inicio/fin reales; UI con nombre de sede. |
+| CA-02 | Cumple | [[S3-cierre-agendamiento]] filtro `date` | — |
+| CA-03 / DoD | Cumple | [[S3-cierre-agendamiento]] REST 403/404 | Solo bloques propios; USER/ADMIN sin acceso; DoD cumplido. |
 ## Historial de validación
 - 2026-09-17 — HU creada en estado `Pendiente de aprobación`.
+- 2026-09-25 — Cierre S3 del núcleo de agendamiento: evidencia en [[S3-cierre-agendamiento]]. Estado sin cambiar hasta recorrido web visual.
+- 2026-09-29 — Recorrido web con los tres roles y verificación final: [[S3-cierre-agendamiento]]. Estado `Completada`.
 ## Notas y decisiones
 - El formato visual queda bajo el diseño aprobado.

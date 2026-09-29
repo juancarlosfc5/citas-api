@@ -16,19 +16,19 @@ import java.util.UUID;
 
 /** Delivers the approved minimal appointment events after the database transaction commits. */
 @Component
-@ConditionalOnProperty(prefix = "app.n8n.webhook", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "app.n8n.status-webhook", name = "enabled", havingValue = "true")
 class N8nWebhookAppointmentEvents implements Ports.AppointmentEvents {
     private static final Logger log = LoggerFactory.getLogger(N8nWebhookAppointmentEvents.class);
     private final RestClient client;
     private final String webhookUrl;
     private final String bearerToken;
 
-    N8nWebhookAppointmentEvents(@Value("${app.n8n.webhook.url}") String webhookUrl,
-                                 @Value("${app.n8n.webhook.bearer-token}") String bearerToken,
-                                 @Value("${app.n8n.webhook.connect-timeout-ms}") int connectTimeoutMs,
-                                 @Value("${app.n8n.webhook.read-timeout-ms}") int readTimeoutMs) {
+    N8nWebhookAppointmentEvents(@Value("${app.n8n.status-webhook.url}") String webhookUrl,
+                                 @Value("${app.n8n.status-webhook.bearer-token}") String bearerToken,
+                                 @Value("${app.n8n.status-webhook.connect-timeout-ms}") int connectTimeoutMs,
+                                 @Value("${app.n8n.status-webhook.read-timeout-ms}") int readTimeoutMs) {
         if (webhookUrl == null || webhookUrl.isBlank() || bearerToken == null || bearerToken.isBlank()) {
-            throw new IllegalStateException("N8N_WEBHOOK_URL y N8N_WEBHOOK_BEARER_TOKEN son obligatorios cuando N8N_WEBHOOK_ENABLED=true");
+            throw new IllegalStateException("N8N_STATUS_WEBHOOK_URL y N8N_STATUS_WEBHOOK_BEARER_TOKEN son obligatorios cuando N8N_STATUS_WEBHOOK_ENABLED=true");
         }
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(connectTimeoutMs);

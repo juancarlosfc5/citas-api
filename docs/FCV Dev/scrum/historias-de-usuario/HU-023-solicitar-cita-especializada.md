@@ -2,7 +2,7 @@
 id: HU-023
 tipo: historia-de-usuario
 titulo: "Solicitar cita especializada"
-estado: Aprobada
+estado: Completada
 epica: "[[EP-005-busqueda-y-reserva-de-citas]]"
 esfuerzo: Alto
 sprint_sugerido: "Incremento 4"
@@ -29,9 +29,9 @@ La solicitud nace `REQUESTED` y retiene slots para evitar doble reserva.
 ## Esfuerzo
 **Nivel:** Alto. **Justificación de dificultad:** reserva provisional, concurrencia, estado y auditoría.
 ## Tareas de desarrollo
-- [ ] **T-01 — Definir solicitud especializada.** Dificultad: Medio. Documentar selección y respuesta `REQUESTED`.
-- [ ] **T-02 — Retener slots atómicamente.** Dificultad: Alto. Revalidar disponibilidad completa al confirmar.
-- [ ] **T-03 — Integrar flujo/pruebas.** Dificultad: Alto. Cubrir 30/60, ya tomada y auditoría.
+- [x] **T-01 — Definir solicitud especializada.** Dificultad: Medio. Documentar selección y respuesta `REQUESTED`.
+- [x] **T-02 — Retener slots atómicamente.** Dificultad: Alto. Revalidar disponibilidad completa al confirmar.
+- [x] **T-03 — Integrar flujo/pruebas.** Dificultad: Alto. Cubrir 30/60, ya tomada y auditoría.
 ## Criterios de aceptación
 ### CA-01 — Solicitud retenida
 **Dado** una especialidad/profesional/franja válidos, **cuando** USER confirma, **entonces** se crea cita `REQUESTED` y los slots quedan retenidos.
@@ -40,16 +40,18 @@ La solicitud nace `REQUESTED` y retiene slots para evitar doble reserva.
 ### CA-03 — Historial inicial
 **Dado** la solicitud creada, **cuando** se consulta auditoría, **entonces** se registra estado, fuente USER y fecha aplicables.
 ## Definition of Done
-- [ ] CA-01 a CA-03 probados incluida concurrencia/persistencia.
-- [ ] Contrato, cliente, migración/índices aplicables y seguridad de ownership verificados.
-- [ ] Trazabilidad Scrum actualizada.
+- [x] CA-01 a CA-03 probados incluida concurrencia/persistencia.
+- [x] Contrato, cliente, migración/índices aplicables y seguridad de ownership verificados.
+- [x] Trazabilidad Scrum actualizada.
 ## Evidencia de validación
 | Elemento | Resultado | Evidencia | Observación |
 |---|---|---|---|
-| CA-01 | Pendiente | — | — |
-| CA-02 | Pendiente | — | — |
-| CA-03 / DoD | Pendiente | — | — |
+| CA-01 | Cumple | [[S3-cierre-agendamiento]] citas 5/6 | `REQUESTED`, 2 slots retenidos. |
+| CA-02 | Cumple | REST 409 en 14:00/14:30 | Sin duplicado. |
+| CA-03 / DoD | Cumple | [[S3-cierre-agendamiento]] | Historial `USER`. DoD cumplido con recorrido web 2026-09-29. |
 ## Historial de validación
 - 2026-09-17 — HU creada en estado `Pendiente de aprobación`.
+- 2026-09-25 — Cierre S3 del núcleo de agendamiento: evidencia en [[S3-cierre-agendamiento]]. Estado sin cambiar hasta recorrido web visual.
+- 2026-09-29 — Recorrido web con los tres roles y verificación final: [[S3-cierre-agendamiento]]. Estado `Completada`.
 ## Notas y decisiones
 - La reserva queda liberada al rechazo mediante [[HU-024-resolver-solicitud-especializada]].
